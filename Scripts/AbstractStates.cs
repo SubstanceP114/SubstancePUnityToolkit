@@ -4,8 +4,6 @@ using UnityEngine;
 
 public abstract class AbstractStates
 {
-    protected FSM fsm;
-
     public virtual void OnEnter() { }
     public virtual void OnUpdate() { }
     public virtual void OnFixedUpdate() { }
@@ -14,4 +12,4 @@ public abstract class AbstractStates
     public virtual void OnCollisionEnter(Collision collision) { }
     public virtual void OnCollisionEnter2D(Collision2D collision) { }
 }
-public enum StateType { }
+public enum StateType { Idle,Move }

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Player
 {
-    public static PlayerBehavior Current; 
+    public static PlayerFSM Current; 
 }
