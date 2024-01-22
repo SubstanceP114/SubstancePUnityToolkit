@@ -6,19 +6,36 @@ using UnityEngine;
 public class PlayerFSM : AbstractFSM
 {
     [SerializeField] private bool isDefaultPlayer;
-    [SerializeField] private float moveSpeed;
+    [SerializeField, Header("Move")] private float moveSpeed;
+    [SerializeField, Header("Jump")] private bool disableJump;
+    [SerializeField] private float impulse;
+    [SerializeField] private float force;
+    public float keepJumpTime;
 
     private Rigidbody rb;
+    private Rigidbody2D rb2d;
     private int xInput;
     private int yInput;
     private int zInput;
     private void Awake()
     {
         if (isDefaultPlayer) Player.Current = this;
-        rb = GetComponent<Rigidbody>();
+        switch (SettingManager.Instance.mode)
+        {
+            case Dimension.Vertical2D:
+            case Dimension.Horizontal2D:
+                rb2d = GetComponent<Rigidbody2D>();
+                break;
+            case Dimension.Normal3D:
+                rb = GetComponent<Rigidbody>();
+                break;
+            default:
+                break;
+        }
         AddState(StateType.Idle, new PlayerIdleState(this));
-        AddState(StateType.Move, new PlayerIdleState(this));
-        SwitchState(StateType.Idle);
+        AddState(StateType.Pend, new PlayerPendState(this));
+        if (!disableJump) AddState(StateType.Jump, new PlayerJumpState(this));
+        SwitchState(StateType.Pend);
     }
     protected override void Update()
     {
@@ -60,5 +77,21 @@ public class PlayerFSM : AbstractFSM
             Vector3.left * xInput * Time.fixedDeltaTime * moveSpeed +
             Vector3.up * yInput * Time.fixedDeltaTime * moveSpeed +
             Vector3.forward * zInput * Time.fixedDeltaTime * moveSpeed);
-
+    public void OnJump() => MatchJump(impulse, 1);
+    public void KeepJump() => MatchJump(force, 0);
+    private void MatchJump(float value, int mode)
+    {
+        switch (SettingManager.Instance.mode)
+        {
+            case Dimension.Vertical2D:
+            case Dimension.Horizontal2D:
+                rb2d.AddForce(Vector2.up * value, (ForceMode2D)mode);
+                break;
+            case Dimension.Normal3D:
+                rb.AddForce(Vector3.up * value, (ForceMode)mode);
+                break;
+            default:
+                break;
+        }
+    }
 }

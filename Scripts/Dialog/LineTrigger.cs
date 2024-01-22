@@ -5,10 +5,10 @@ using UnityEngine;
 public class LineTrigger : MonoBehaviour
 {
     [SerializeField] private GameObject lineSource;
-    private ILineProcecer line;
+    private ILineProcesser line;
     private void Start()
     {
-        line = lineSource.GetComponent<ILineProcecer>();
+        line = lineSource.GetComponent<ILineProcesser>();
     }
     private void OnTriggerEnter(Collider other)
     {

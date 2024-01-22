@@ -12,4 +12,4 @@ public abstract class AbstractStates
     public virtual void OnCollisionEnter(Collision collision) { }
     public virtual void OnCollisionEnter2D(Collision2D collision) { }
 }
-public enum StateType { Idle,Move }
+public enum StateType { Idle,Pend,Jump }

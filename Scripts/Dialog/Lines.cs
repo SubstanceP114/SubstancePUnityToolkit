@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class Lines : MonoBehaviour, ILineProcecer
+public class Lines : MonoBehaviour, ILineProcesser
 {
     [SerializeField] private bool playOnce;
     [SerializeField] private float interval = 0.02f;
@@ -43,7 +43,7 @@ public class Lines : MonoBehaviour, ILineProcecer
     {
         if (textMesh) textMesh.text = targetText;
         else if (text) text.text = targetText;
-        else Debug.Log("There is no matching text component, chech Text Position please.");
+        else Debug.Log("There is no matching text component, check Text Position please.");
     }
     private IEnumerator ShowDialog()
     {
